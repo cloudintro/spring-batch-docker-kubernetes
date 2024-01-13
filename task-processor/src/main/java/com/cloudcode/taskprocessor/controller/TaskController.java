@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
 @Log4j2
 @RestController
 public class TaskController {
@@ -34,8 +33,9 @@ public class TaskController {
     }
 
     @GetMapping("/task")
-    public ResponseEntity<List<TaskInfo>> getTaskStatus(@RequestParam(required = false, name = "task-id") Integer taskId,
-    @RequestParam(required = false, name = "task-name") String taskName) {
+    public ResponseEntity<List<TaskInfo>> getTaskStatus(
+            @RequestParam(required = false, name = "task-id") Integer taskId,
+            @RequestParam(required = false, name = "task-name") String taskName) {
         return new ResponseEntity<>(taskService.getTaskStatus(taskId, taskName), HttpStatus.OK);
     }
 }

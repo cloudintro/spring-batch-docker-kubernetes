@@ -9,14 +9,14 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class TaskExecutionListener implements JobExecutionListener {
 
-    @Override
-    public void beforeJob(@NonNull JobExecution jobExecution) {
-        log.info("Before Job status: {}, start time {}", jobExecution.getStatus(), jobExecution.getStartTime());
-	}
+        @Override
+        public void beforeJob(@NonNull JobExecution jobExecution) {
+                log.info("Before Job status: {}, start time {}", jobExecution.getStatus(), jobExecution.getStartTime());
+        }
 
-	@Override
-	public void afterJob(@NonNull JobExecution jobExecution) {
-        log.info("After Job status: {}, start time {}", jobExecution.getStatus(), jobExecution.getEndTime());
-	}
-    
+        @Override
+        public void afterJob(@NonNull JobExecution jobExecution) {
+                log.info("After Job status: {}, end time {}", jobExecution.getStatus(), jobExecution.getEndTime());
+        }
+
 }

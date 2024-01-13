@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface TaskRepo extends JpaRepository<TaskInfo, Integer> {
     List<TaskInfo> findByTaskNameAllIgnoreCase(String taskName);
+
     List<TaskInfo> findByTaskIdAndTaskNameAllIgnoreCase(Integer taskId, String taskName);
+
     List<TaskInfo> findByTaskStatus(String taskStatus);
 }

@@ -12,6 +12,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.cloudcode.taskprocessor.model.TaskInfo;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+
 @Configuration
 public class TaskBatchConfig {
 
@@ -23,7 +26,10 @@ public class TaskBatchConfig {
 
     @Bean
     public Job job() {
-        return new JobBuilder("job-001", jobRepository).start(step()).listener(listener()).build();
+        // return new JobBuilder("job-"+ Instant.now().getEpochSecond(),
+        // jobRepository).flow(step()).end().build();
+        return new JobBuilder("job-" + Instant.now().getEpochSecond(), jobRepository).start(step()).listener(listener())
+                .build();
     }
 
     @Bean

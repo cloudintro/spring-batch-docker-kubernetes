@@ -9,5 +9,5 @@ public final class AppConstants {
     public enum TASK_STATUS {
         CREATED, PROCESSING, DELETED, COMPLETED, EXPIRED;
     }
-    
+
 }

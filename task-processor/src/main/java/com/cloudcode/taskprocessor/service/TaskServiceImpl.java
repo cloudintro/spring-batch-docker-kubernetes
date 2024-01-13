@@ -19,13 +19,21 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private TaskRepo taskRepo;
 
+    @Autowired
+    JobRunner jobRunner;
+
     @Override
     public TaskInfo saveTask(TaskInfo taskInfo) {
         if (Objects.isNull(taskInfo.getUpdateTime())) {
             taskInfo.setTaskStatus(TASK_STATUS.CREATED.name());
         }
         taskInfo.setUpdateTime(ZonedDateTime.now());
-        return taskRepo.save(taskInfo);
+
+        TaskInfo createdTask = taskRepo.save(taskInfo);
+        if (TASK_STATUS.CREATED.name().equals(createdTask.getTaskStatus())) {
+            jobRunner.launchJob();
+        }
+        return createdTask;
     }
 
     @Override
