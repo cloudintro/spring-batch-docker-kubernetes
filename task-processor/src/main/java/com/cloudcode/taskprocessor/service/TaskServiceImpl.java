@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cloudcode.taskprocessor.constant.AppConstants.TASK_STATUS;
 import com.cloudcode.taskprocessor.model.TaskInfo;
 import com.cloudcode.taskprocessor.repo.TaskRepo;
 
@@ -17,10 +18,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private TaskRepo taskRepo;
-
-    public enum TASK_STATUS {
-        CREATED, PROCESSING, DELETED, COMPLETED, EXPIRED;
-    }
 
     @Override
     public TaskInfo saveTask(TaskInfo taskInfo) {
