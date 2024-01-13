@@ -1,0 +1,30 @@
+
+### create task
+POST http://localhost:8081/task-manager/task
+Content-Type: application/json
+
+{
+    "task-name": "ABC",
+    "task-desc": "Task-001"
+}
+
+### get task status
+GET http://localhost:8081/task-manager/task?task-id=1&task-name=abc
+Content-Type: application/json
+
+### create task
+POST http://localhost:8091/task-processor/task
+Content-Type: application/json
+
+{
+    "task-id": 1,
+    "task-name": "ABC",
+    "task-desc": "Task-001-Updated",
+    "task-status": "CREATED",
+    "update-time": "2024-01-13T07:43:21.21177Z"
+  }
+
+### get task status
+GET http://localhost:8081/task-manager/task
+#?task-id=1&task-name=abc
+Content-Type: application/json
