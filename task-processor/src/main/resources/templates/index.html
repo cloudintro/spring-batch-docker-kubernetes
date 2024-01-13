@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Task Detail</title>
+</head>
+
+<body bgcolor="black" text="green">
+    <table border="dotted">
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td>status</td>
+            <td>Update time</td>
+        </tr>
+        <tr th:each="taskInfo : ${tasks}">
+            <td th:text="${taskInfo.taskId}"></td>
+            <td th:text="${taskInfo.taskName}"></td>
+            <td th:text="${taskInfo.taskStatus}"></td>
+            <td th:text="${taskInfo.updateTime}"></td>
+        </tr>
+
+    </table>
+</body>
+
+</html>

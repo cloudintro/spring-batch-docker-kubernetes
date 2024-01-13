@@ -13,6 +13,8 @@ import com.cloudcode.taskprocessor.constant.AppConstants.TASK_STATUS;
 import com.cloudcode.taskprocessor.model.TaskInfo;
 import com.cloudcode.taskprocessor.repo.TaskRepo;
 
+import reactor.core.publisher.Flux;
+
 @Service
 public class TaskServiceImpl implements TaskService {
 
@@ -48,6 +50,11 @@ public class TaskServiceImpl implements TaskService {
         } else {
             return taskRepo.findAll();
         }
+    }
+
+    @Override
+    public Flux<TaskInfo> getTasks() {
+        return Flux.fromIterable(taskRepo.findAll());
     }
 
 }
