@@ -13,7 +13,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.cloudcode.taskprocessor.model.TaskInfo;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Configuration
 public class TaskBatchConfig {
