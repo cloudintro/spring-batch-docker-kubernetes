@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cloudcode.taskprocessor.constant.AppConstants.TASK_STATUS;
 import com.cloudcode.taskprocessor.model.TaskInfo;
 import com.cloudcode.taskprocessor.repo.TaskRepo;
 
@@ -18,9 +19,8 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private TaskRepo taskRepo;
 
-    public enum TASK_STATUS {
-        CREATED, PROCESSING, DELETED, COMPLETED, EXPIRED;
-    }
+    @Autowired
+    JobRunner jobRunner;
 
     @Override
     public TaskInfo saveTask(TaskInfo taskInfo) {
@@ -28,7 +28,12 @@ public class TaskServiceImpl implements TaskService {
             taskInfo.setTaskStatus(TASK_STATUS.CREATED.name());
         }
         taskInfo.setUpdateTime(ZonedDateTime.now());
-        return taskRepo.save(taskInfo);
+
+        TaskInfo createdTask = taskRepo.save(taskInfo);
+        if (TASK_STATUS.CREATED.name().equals(createdTask.getTaskStatus())) {
+            jobRunner.launchJob();
+        }
+        return createdTask;
     }
 
     @Override

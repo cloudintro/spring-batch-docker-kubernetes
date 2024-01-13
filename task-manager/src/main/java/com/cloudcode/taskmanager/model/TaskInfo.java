@@ -16,6 +16,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class TaskInfo {
+
     @JsonProperty("task-id")
     private Integer taskId;
 
