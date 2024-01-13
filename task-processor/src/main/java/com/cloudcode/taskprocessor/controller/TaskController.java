@@ -34,8 +34,8 @@ public class TaskController {
     }
 
     @GetMapping("/task")
-    public ResponseEntity<List<TaskInfo>> getTaskStatus(@RequestParam(required = false) Integer taskId,
-            @RequestParam(required = false) String taskName) {
+    public ResponseEntity<List<TaskInfo>> getTaskStatus(@RequestParam(required = false, name = "task-id") Integer taskId,
+    @RequestParam(required = false, name = "task-name") String taskName) {
         return new ResponseEntity<>(taskService.getTaskStatus(taskId, taskName), HttpStatus.OK);
     }
 }
