@@ -1,19 +1,18 @@
 package com.cloudcode.taskprocessor.service;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cloudcode.taskprocessor.constant.AppConstants;
 import com.cloudcode.taskprocessor.constant.AppConstants.TASK_STATUS;
 import com.cloudcode.taskprocessor.model.TaskInfo;
 import com.cloudcode.taskprocessor.repo.TaskRepo;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -25,26 +24,29 @@ public class TaskServiceImpl implements TaskService {
     JobRunner jobRunner;
 
     @Override
-    public TaskInfo saveTask(TaskInfo taskInfo) {
+    public Mono<TaskInfo> saveTask(TaskInfo taskInfo) {
+        boolean launchJob = false;
         if (Objects.isNull(taskInfo.getUpdateTime())) {
+            launchJob = true;
+            taskInfo.setTaskId(Instant.now().toEpochMilli());
             taskInfo.setTaskStatus(TASK_STATUS.CREATED.name());
         }
-        taskInfo.setUpdateTime(ZonedDateTime.now());
+        taskInfo.setUpdateTime(ZonedDateTime.now().format(AppConstants.dateTimeFormatter));
 
-        TaskInfo createdTask = taskRepo.save(taskInfo);
-        if (TASK_STATUS.CREATED.name().equals(createdTask.getTaskStatus())) {
+        Mono<TaskInfo> createdTask = taskRepo.save(taskInfo);
+        if (launchJob) {
             jobRunner.launchJob();
         }
         return createdTask;
     }
 
     @Override
-    public List<TaskInfo> getTaskStatus(Integer taskId, String taskName) {
+    public Flux<TaskInfo> getTaskStatus(Long taskId, String taskName) {
         if (Objects.nonNull(taskId) && Objects.nonNull(taskName)) {
             return taskRepo.findByTaskIdAndTaskNameAllIgnoreCase(taskId, taskName);
         } else if (Objects.nonNull(taskId)) {
-            Optional<TaskInfo> taskInfoOptional = taskRepo.findById(taskId);
-            return taskInfoOptional.isPresent() ? List.of(taskInfoOptional.get()) : Collections.EMPTY_LIST;
+            Mono<TaskInfo> taskInfoMono = taskRepo.findById(taskId);
+            return taskInfoMono.flux();
         } else if (Objects.nonNull(taskName)) {
             return taskRepo.findByTaskNameAllIgnoreCase(taskName);
         } else {
@@ -54,7 +56,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Flux<TaskInfo> getTasks() {
-        return Flux.fromIterable(taskRepo.findAll());
+        return taskRepo.findAll();
     }
 
 }

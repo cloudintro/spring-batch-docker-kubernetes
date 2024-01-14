@@ -1,7 +1,5 @@
 package com.cloudcode.taskmanager.model;
 
-import java.time.ZonedDateTime;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotBlank;
@@ -18,7 +16,7 @@ import lombok.ToString;
 public class TaskInfo {
 
     @JsonProperty("task-id")
-    private Integer taskId;
+    private Long taskId;
 
     @NotBlank(message = "task name is mandatory")
     @Size(min = 3, max = 15, message = "invalid task name")
@@ -34,7 +32,7 @@ public class TaskInfo {
     private String taskStatus;
 
     @JsonProperty("update-time")
-    private ZonedDateTime updateTime;
+    private String updateTime;
 
     public TaskInfo(String taskName, String taskDesc) {
         this.taskName = taskName;

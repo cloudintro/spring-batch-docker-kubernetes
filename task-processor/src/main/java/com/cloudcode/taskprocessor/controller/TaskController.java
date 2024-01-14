@@ -1,15 +1,13 @@
 package com.cloudcode.taskprocessor.controller;
 
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cloudcode.taskprocessor.model.TaskInfo;
 import com.cloudcode.taskprocessor.service.TaskService;
 
 import lombok.extern.log4j.Log4j2;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,15 +25,15 @@ public class TaskController {
     }
 
     @PostMapping("/task")
-    public ResponseEntity<TaskInfo> saveTask(@RequestBody TaskInfo taskInfo) {
+    public Mono<TaskInfo> saveTask(@RequestBody TaskInfo taskInfo) {
         log.info("save task {}", taskInfo);
-        return new ResponseEntity<>(taskService.saveTask(taskInfo), HttpStatus.CREATED);
+        return taskService.saveTask(taskInfo);
     }
 
     @GetMapping("/task")
-    public ResponseEntity<List<TaskInfo>> getTaskStatus(
-            @RequestParam(required = false, name = "task-id") Integer taskId,
+    public Flux<TaskInfo> getTaskStatus(
+            @RequestParam(required = false, name = "task-id") Long taskId,
             @RequestParam(required = false, name = "task-name") String taskName) {
-        return new ResponseEntity<>(taskService.getTaskStatus(taskId, taskName), HttpStatus.OK);
+        return taskService.getTaskStatus(taskId, taskName);
     }
 }

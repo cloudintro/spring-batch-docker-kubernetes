@@ -1,17 +1,17 @@
 package com.cloudcode.taskprocessor.repo;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
 
 import com.cloudcode.taskprocessor.model.TaskInfo;
 
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 @Repository
-public interface TaskRepo extends JpaRepository<TaskInfo, Integer> {
-    List<TaskInfo> findByTaskNameAllIgnoreCase(String taskName);
+public interface TaskRepo extends ReactiveMongoRepository<TaskInfo, Long> {
+    Flux<TaskInfo> findByTaskNameAllIgnoreCase(String taskName);
 
-    List<TaskInfo> findByTaskIdAndTaskNameAllIgnoreCase(Integer taskId, String taskName);
+    Flux<TaskInfo> findByTaskIdAndTaskNameAllIgnoreCase(Long taskId, String taskName);
 
-    List<TaskInfo> findByTaskStatus(String taskStatus);
+    Flux<TaskInfo> findByTaskStatus(String taskStatus);
 }
