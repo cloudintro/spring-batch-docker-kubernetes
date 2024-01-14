@@ -25,17 +25,16 @@ public class TaskBatchConfig {
 
     @Bean
     public Job job() {
-        // return new JobBuilder("job-"+ Instant.now().getEpochSecond(),
-        // jobRepository).flow(step()).end().build();
-        return new JobBuilder("job-" + Instant.now().getEpochSecond(), jobRepository).start(step()).listener(listener())
-                .build();
+        //return new JobBuilder("job-"+ Instant.now().toEpochMilli(),jobRepository).flow(step()).end().build();
+        return new JobBuilder("job-" + Instant.now().toEpochMilli(), jobRepository).start(step()).listener(listener()).build();
     }
 
     @Bean
     public Step step() {
-        return new StepBuilder("step-1", jobRepository)
+        return new StepBuilder("step-"+Instant.now().toEpochMilli(), jobRepository)
                 .<TaskInfo, TaskInfo>chunk(1, transactionManager)
-                .reader(reader()).processor(processor()).writer(writer()).build();
+                .reader(reader()).processor(processor()).writer(writer())
+                .allowStartIfComplete(true).build();
     }
 
     @Bean

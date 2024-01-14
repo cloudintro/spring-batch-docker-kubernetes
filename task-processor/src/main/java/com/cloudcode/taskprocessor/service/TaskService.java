@@ -1,15 +1,14 @@
 package com.cloudcode.taskprocessor.service;
 
-import java.util.List;
-
 import com.cloudcode.taskprocessor.model.TaskInfo;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface TaskService {
-    TaskInfo saveTask(TaskInfo taskInfo);
+    Mono<TaskInfo> saveTask(TaskInfo taskInfo);
 
-    List<TaskInfo> getTaskStatus(Integer taskId, String taskName);
+    Flux<TaskInfo> getTaskStatus(Long taskId, String taskName);
 
     Flux<TaskInfo> getTasks();
 }

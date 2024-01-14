@@ -1,7 +1,5 @@
 package com.cloudcode.taskprocessor.service;
 
-import java.time.LocalDateTime;
-
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -11,12 +9,15 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Component
+@EnableAsync
 public class JobRunner {
 
     @Autowired
@@ -25,9 +26,9 @@ public class JobRunner {
     @Autowired
     JobLauncher jobLauncher;
 
+    @Async
     public void launchJob() {
-        JobParameters jobParameters = new JobParametersBuilder()
-                .addLocalDateTime("time-now", LocalDateTime.now()).toJobParameters();
+        JobParameters jobParameters = new JobParametersBuilder().toJobParameters();
         try {
             jobLauncher.run(job, jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
