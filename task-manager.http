@@ -28,3 +28,7 @@ Content-Type: application/json
 GET http://localhost:8091/task-processor/task
 #?task-id=1&task-name=abc
 Content-Type: application/json
+
+### get task status stream
+GET http://localhost:8091/task-processor/stream
+Content-Type: application/json
