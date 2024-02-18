@@ -1,0 +1,10 @@
+.git
+.gitignore
+.vscode
+.idea
+.mvn
+Dockerfile*
+docker-compose*
+README.md
+LICENSE
+mvnw*
