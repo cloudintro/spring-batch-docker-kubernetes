@@ -13,7 +13,7 @@ import com.cloudcode.taskmanager.model.TaskInfo;
 
 import jakarta.validation.Valid;
 
-@FeignClient(name = "task-processor", url = "${application.task-processor.url:}")
+@FeignClient(name = "task-processor", url = "${app.task-processor.url:}")
 public interface TaskProcessorProxy {
     @PostMapping("/task")
     ResponseEntity<TaskInfo> saveTask(@RequestBody @Valid TaskInfo taskInfo);

@@ -50,13 +50,13 @@ class TaskProcessorApplicationTests {
 	@Test
 	public void test_getTaskStatus() {
 		when(taskRepo.findAll()).thenReturn(Flux.just(taskCreated, taskCompleted));
-		StepVerifier.create(restController.getTaskStatus(null, null))
+		StepVerifier.create(restController.getTask(null, null))
 				.expectSubscription()
 				.expectNextCount(2)
 				.expectComplete()
 				.verify();
 
-		StepVerifier.create(restController.getTaskStatus(null, null))
+		StepVerifier.create(restController.getTask(null, null))
 				.expectSubscription()
 				.expectNext(taskCreated)
 				.expectNext(taskCompleted)
@@ -64,7 +64,7 @@ class TaskProcessorApplicationTests {
 				.expectComplete()
 				.verify();
 
-		StepVerifier.create(restController.getTaskStatus(null, null))
+		StepVerifier.create(restController.getTask(null, null))
 				.expectSubscription()
 				.assertNext(task -> {
 					assertEquals(taskCreated.getTaskName(), task.getTaskName());
